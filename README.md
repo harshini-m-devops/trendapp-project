@@ -1,91 +1,197 @@
-DevOps Practice Project – Dist Directory
+🚀 Trend Application – End-to-End DevOps CI/CD Pipeline
 
-This repository contains the production-ready build files (dist folder) for DevOps practice and deployment exercises.
+This project demonstrates a complete DevOps CI/CD pipeline for deploying the Trend Application on AWS EKS using Terraform, Jenkins, Docker, and Kubernetes.
 
-It is intentionally structured to help learners focus on CI/CD pipelines, hosting, containerization, and infrastructure setup rather than application development.
+The pipeline automates:
 
-📁 What This Repository Contains
+Infrastructure provisioning
 
-dist/ – Compiled and production-ready static files
+Containerization
 
-HTML
+Image storage
 
-CSS
+Deployment
 
-JavaScript
+Monitoring
 
-Assets (images, fonts, etc.)
+🔗 Git Repository
+Project Repository
+https://github.com/harshini-m-devops/trendapp-project.git
+Application Source Repository
+https://github.com/Vennilavanguvi/Trend.git
+🏗 Infrastructure Provisioning (Terraform)
 
-These files are ready to deploy to:
+Infrastructure was provisioned using Terraform Infrastructure as Code (IaC).
 
-Web servers (Nginx / Apache)
+Resources created using main.tf:
 
-Cloud platforms (AWS S3, Azure Blob, GCP Storage)
+VPC
 
-Containerized environments (Docker + Nginx)
+Public Subnets
 
-Kubernetes clusters
+Internet Gateway
 
-CI/CD pipeline demonstrations
+Route Tables
 
-🎯 Purpose of This Repository
+IAM Roles
 
-This repository is designed for:
+EC2 Instance for Jenkins Server
 
-DevOps beginners
+Terraform Commands
+terraform init
+terraform plan
+terraform apply
 
-CI/CD practice
+Terraform automatically creates the infrastructure required to run the CI/CD pipeline.
 
-Deployment pipeline testing
+🧰 Technologies Used
 
-Docker & Kubernetes deployment exercises
+Terraform – Infrastructure provisioning
 
-Web server configuration practice
+AWS EC2 – Jenkins server
 
-Reverse proxy and load balancer setup
+Docker – Containerization
 
-The goal is to simulate real-world deployment scenarios using already built application files.
+DockerHub – Container image registry
 
-❓ Why is there NO package.json?
+Kubernetes – Container orchestration
 
-You may notice that this repository does not include:
+AWS EKS – Managed Kubernetes service
 
-package.json
+Jenkins – CI/CD automation
 
-node_modules
+GitHub – Version control
 
-Source code (src/)
+kubectl – Kubernetes CLI
 
-Build tools configuration
+Prometheus – Monitoring
 
-✅ Reason:
+Grafana – Visualization dashboards
 
-This repository only contains the final production build output (dist), not the development source code.
+🏛 Project Architecture
+Developer Push Code → GitHub
+        ↓
+GitHub Webhook
+        ↓
+Jenkins Pipeline
+        ↓
+Docker Build
+        ↓
+Push Docker Image to DockerHub
+        ↓
+Deploy Application to AWS EKS
+        ↓
+Kubernetes Deployment
+        ↓
+Kubernetes Service (LoadBalancer)
+        ↓
+Application accessible via Public URL
+        ↓
+Monitoring via Prometheus & Grafana
+⚙ Steps Implemented
+1️⃣ Application Setup
 
-In a typical project:
+Clone the application repository:
 
-Developers write source code.
+git clone https://github.com/Vennilavanguvi/Trend.git
 
-The project is built using tools like:
+The application runs on:
 
-Node.js
+Port 3000
+2️⃣ Dockerization
 
-Webpack
+Created a Dockerfile to containerize the application.
 
-Vite
+3️⃣ Container Registry (DockerHub)
 
-React (or other frameworks)
+Created DockerHub repository:
 
-A dist/ folder is generated.
+harshinimdocker/trend-app
 
-Only the production build is deployed to servers.
+Push Docker image:
 
-This repository represents step 4 only.
+docker tag trend-app harshinimdocker/trend-app:latest
+docker push harshinimdocker/trend-app:latest
+4️⃣ Kubernetes Deployment (AWS EKS)
 
-Since this is already the compiled output:
+Create the EKS cluster:
 
-No dependencies are required
+eksctl create cluster \
+--name trend-cluster \
+--region us-east-1 \
+--node-type t3.micro \
+--nodes 2
 
-No build process is required
+Verify cluster:
 
-No package.json is needed
+kubectl get nodes
+5️⃣ Kubernetes Configuration
+
+Created the following files:
+
+deployment.yml
+
+service.yml
+
+These files are used to deploy the containerized application to the EKS cluster.
+
+🔄 CI/CD Pipeline (Jenkins)
+
+Jenkins automates the build and deployment process.
+
+Pipeline flow:
+
+GitHub Push
+     ↓
+GitHub Webhook
+     ↓
+Jenkins Pipeline (SCM)
+     ↓
+Jenkins automatically clones repository
+     ↓
+Build Docker Image
+     ↓
+Push Image to DockerHub
+     ↓
+Deploy Application to AWS EKS
+🔔 GitHub Webhook Integration
+
+GitHub webhook automatically triggers the Jenkins pipeline on every commit.
+
+This enables continuous deployment of the application.
+
+📊 Monitoring
+
+Monitoring is implemented using Prometheus and Grafana.
+
+Prometheus
+
+Prometheus collects metrics such as:
+
+Pod health
+
+CPU usage
+
+Memory usage
+
+Kubernetes cluster metrics
+
+Grafana
+
+Grafana provides dashboards and visualization.
+
+Features include:
+
+Real-time cluster monitoring
+
+Pod resource usage tracking
+
+Alerting for system failures
+
+🌐 Application Access
+
+Application URL:
+
+http://acfd01e48840b418caa2e28df5d40b68-859378692.us-east-1.elb.amazonaws.com
+📦 LoadBalancer ARN
+arn:aws:elasticloadbalancing:us-east-1:084396578047:loadbalancer/acfd01e48840b418caa2e28df5d40b68
