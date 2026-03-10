@@ -13,6 +13,14 @@ pipeline {
             }
         }
 
+        stage('Login to DockerHub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                }
+            }
+        }
+
         stage('Push Docker Image to DockerHub') {
             steps {
                 sh 'docker push $DOCKER_IMAGE:latest'
@@ -21,8 +29,8 @@ pipeline {
 
         stage('Deploy to Kubernetes (EKS)') {
             steps {
-                sh 'kubectl apply -f deployment.yml' 
-                sh 'kubectl apply -f service.yml' 
+                sh 'kubectl apply -f deployment.yml'
+                sh 'kubectl apply -f service.yml'
             }
         }
 
